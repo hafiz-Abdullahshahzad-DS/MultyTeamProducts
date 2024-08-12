@@ -1,0 +1,10 @@
+langchain-chroma
+langchain_community
+langchain_text_splitters
+langchain_groq
+langgraph
+pypdf
+PyPDF2
+langchain_huggingface
+faiss-cpu
+langchain_google_genai
