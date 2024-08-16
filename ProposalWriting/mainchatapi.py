@@ -1,7 +1,7 @@
 import requests
 from PyPDF2 import PdfReader
 
-filepath = r"E:\Data Science Journey\Optimum-Tech Projects\new_files\Natcast-NSTC-Workforce-Partner-Alliance-Program-CFP-REVISED-AS-OF-7-23-2024web.pdf"
+filepath = r"E:\Data Science Journey\Optimum-Tech Projects\new_files\RFP 202401 Real Estate Bro.pdf"
 
 text = ""
 reader = PdfReader(filepath)
@@ -51,11 +51,30 @@ Create a comprehensive and persuasive project proposal based on the following re
 
 """
 
-url = "http://localhost:11434/api/generate"
+url = "http://localhost:11434/api/chat"
 
 data = {
-    "model": "llama3.1",
-    "prompt": prompt,
+    "model": "gemma2",
+    "messages": [
+        {
+            "role":"user",
+            "content":"Write 5000 words  report on algotrading"
+        }
+    ],
+    "options" : {
+        "mirostat": 1,          # Mirostat sampling (0 = disabled)
+        "mirostat_eta": 0.3,    # Learning rate for Mirostat feedback
+        "mirostat_tau": 2.0,    # Balance between coherence and diversity
+        "num_ctx": 8192,        # Size of the context window
+        "repeat_last_n": 64,    # Look back to prevent repetition
+        "repeat_penalty": 1.1,  # Penalty for repeated phrases
+        "temperature": 0.9,     # Creativity of the model
+        "seed": 42,             # Random number seed
+        "tfs_z": 1.0,           # Tail free sampling parameter
+        "top_k": 30,            # Limits the token generation to the top k options
+        "top_p": 0.85,           # Cumulative probability for token selection
+        "min_p": 0.05           # Minimum probability for token consideration
+    },
     "stream": False
 }
 
@@ -63,8 +82,8 @@ response = requests.post(url, json=data)
 
 
 if response.status_code == 200:
-    print(response.json()['response'])
+    print(response.json()['message']['content'])
     with open("outputllama3-1.txt", "w") as f:
-        f.write(response.json()['response'])
+        f.write(response.json()['message']['content'])
 else:
     print("Error Occurred")
